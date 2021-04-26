@@ -1,3 +1,4 @@
+
 package com.pedro.kalkulator;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     EditText editText1 ,editText2;
     Button hitung;
     TextView textView;
+    RadioGroup radioGroup;
+    String OPERATOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         editText2 = findViewById(R.id.nilai2);
         hitung = findViewById(R.id.botton1);
         textView = findViewById(R.id.hasil);
+        radioGroup = findViewById(R.id.button_group);
     }
 
     private void pesan (String message){
@@ -57,6 +63,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton radioButton = findViewById(group.getCheckedRadioButtonId());
+                OPERATOR = radioButton.getText().toString();
+                textView.setText("Hasil");
+//                pesan( );
+            }
+        });
+
+
     }
 
     private Boolean validate(){
@@ -68,13 +87,34 @@ public class MainActivity extends AppCompatActivity {
         else if (editText2.getText().toString().equals("") || editText2.getText() == null){
             return false;
         }
+        else if (OPERATOR == null){
+            return false;
+        }
 
         return true;
     }
 
 
     private String nilai (int value1 , int value2){
-    int nilai = value1 + value2;
+    int nilai = 0;
+
+    switch (OPERATOR){
+        case "+" :
+            nilai = value1 + value2;
+              break;
+        case "-" :
+            nilai = value1 - value2;
+            break;
+        case "*" :
+            nilai = value1 * value2;
+            break;
+        case ":" :
+            nilai = value1 / value2;
+            break;
+
+    }
+
+
     return String.valueOf(nilai);
     }
 
